@@ -26,7 +26,7 @@ import java.net.InetAddress;
         "com.ltg.framework"
 })
 
-@EnableScheduling
+@EnableSchedulinggit
 public class CourseApplication {
     @SneakyThrows
     public static void main(String[] args) {

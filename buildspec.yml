@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo Doing mvn test...
+      - mvn test
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region <region-code> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region-code>.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn package
+      - docker build -t eureka .
+      - docker tag eureka:latest <account-id>.dkr.ecr.<region-code>.amazonaws.com/eureka:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - docker push <account-id>.dkr.ecr.<region-code>.amazonaws.com/eureka:latest
+      - echo Writing image definitions file...
+      - printf '{"ImageURI":"<account-id>.dkr.ecr.<region-code>.amazonaws.com/eureka:latest"}' > imageDetail.json
+artifacts:
+  files:
+    - course-admin-server/target/course-admin-server-1.0-SNAPSHOT.jar
+    - course-consumer-course/target/course-consumer-course-1.0-SNAPSHOT.jar
+    - course-consumer-order/target/course-consumer-order-1.0-SNAPSHOT.jar
+    - course-login/target/course-login-1.0-SNAPSHOT.jar

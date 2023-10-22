@@ -1,7 +1,6 @@
 package com.ltg.base.login.filter;
 
 
-
 import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ltg.base.sys.data.response.CurrentUserHolder;
@@ -17,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,7 @@ import org.springframework.util.AntPathMatcher;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
-public class LoginFilter implements Filter , Ordered {
+public class LoginFilter implements Filter, Ordered {
     private final RedisTemplate<String, Object> redisTemplate;
     private final LoginProperties loginProperties;
 
@@ -95,12 +96,24 @@ public class LoginFilter implements Filter , Ordered {
 
 
     /**
-     *
-     * @param urls a
+     * @param urls       a
      * @param requestURI a
      * @return 判断某个请求是否在不登录的时候就可以放行
      */
     private boolean checkUrl(List<String> urls, String requestURI) {
+        List<String> list = new ArrayList<>();
+        list.add("/swagger-ui.html");
+        list.add("/swagger-resources");
+        list.add("/swagger-resources/**");
+        list.add("/webjars/**");
+        list.add("/doc.html/**");
+        list.add("/doc.html");
+        list.add("/v3/api-docs/**");
+        list.add("/favicon.ico");
+        list.add("/*.html");
+        list.add("/assets/*.js");
+        list.add("/assets/*.css");
+        urls.addAll(list);
         for (String url : urls) {
             // 匹配 本次请求的requestURI  是否符合 url
             if (antPathMatcher.match(url, requestURI)) {

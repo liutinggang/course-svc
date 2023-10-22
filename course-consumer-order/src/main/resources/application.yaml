@@ -48,22 +48,8 @@ knife4j:
 app:
   login:
     filter-excludeUrl:
-      - /api/v1/account/login
-      - /api/v1/account/register
-      - /api/v1/account/modify/password
+      - /api/v1/account/**
       - /api/v1/file/**
-      - /swagger-ui.html
-      - /swagger-resources"
-      - /swagger-resources/**"
-      - /webjars/**
-      - /doc.html/**
-      - /doc.html
-      - /v3/api-docs/**
-      - /favicon.ico
-      - /*.html
-      - /assets/*.js
-      - /assets/*.css
-      - /logo.png
     filter-includeUrl:
       - /api/v1/**
   storage:

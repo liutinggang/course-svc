@@ -69,7 +69,6 @@ public class SysUserController {
     @GetMapping("/findAll")
     @Operation(summary = "下来菜单:Ok")
     public Result<List<SysUser>> getUsers(@RequestParam Integer position) {
-
         return sysUserService.getUsers(position);
     }
 

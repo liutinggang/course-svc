@@ -45,7 +45,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, String> redisTemplate;
 
-    private final StorageProperties storageProperties;
+
 
     @Override
     public PageInfo<UserPageResp> pageList(Page<UserPageResp> page, String keyword, String roleId) {

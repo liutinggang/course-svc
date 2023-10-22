@@ -17,8 +17,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 import java.io.IOException;
@@ -39,7 +41,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Slf4j
-public class LoginFilter implements Filter {
+@Component
+public class LoginFilter implements Filter , Ordered {
     private final RedisTemplate<String, Object> redisTemplate;
     private final LoginProperties loginProperties;
 
@@ -127,5 +130,10 @@ public class LoginFilter implements Filter {
 
     @Override
     public void destroy() {
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
     }
 }

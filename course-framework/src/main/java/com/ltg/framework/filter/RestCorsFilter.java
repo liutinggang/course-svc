@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 @NoArgsConstructor
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class RestCorsFilter implements Filter {
+public class RestCorsFilter implements Filter,Ordered {
 
 
     @Override
@@ -46,4 +46,8 @@ public class RestCorsFilter implements Filter {
     }
 
 
+    @Override
+    public int getOrder() {
+        return 0;
+    }
 }

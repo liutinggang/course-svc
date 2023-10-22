@@ -40,7 +40,7 @@ spring:
       timeout: 10000
   flyway:
     table: migrations
-    enabled: true
+    enabled: false
     baseline-on-migrate: true
     clean-disabled: true
     sql-migration-prefix: v
@@ -50,7 +50,7 @@ spring:
     password: ${spring.datasource.password}
     driver-class-name: ${spring.datasource.driver-class-name}
 mybatis-plus:
-  mapper-locations: classpath*:com/ltg/course/base/**/mapper/xml/**.xml
+  mapper-locations: classpath*:com/ltg/base/**/mapper/xml/**.xml
 
 knife4j:
   enable: true

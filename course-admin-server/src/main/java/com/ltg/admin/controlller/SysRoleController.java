@@ -37,9 +37,12 @@ public class SysRoleController {
 
     private final SysRoleService sysRoleService;
 
+
     /**
      * 2角色模块:系统中包含多个角色信息例如:系统管理员 项目管理员 项目经理 普通员工，每个角色具有不同的权限操作。
-     * @param req
+     * @param request
+     * @param roleName
+     * @param roleId
      * @return
      */
 

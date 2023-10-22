@@ -23,7 +23,7 @@ import java.net.InetAddress;
 
 @Slf4j
 @SpringBootApplication(scanBasePackages = {
-        "com.ltg.course",
+        "com.ltg.base",
         "com.ltg.order",
         "com.ltg.framework"
 })

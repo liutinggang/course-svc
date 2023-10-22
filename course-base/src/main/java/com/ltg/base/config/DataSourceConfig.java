@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @MapperScan(basePackages = {
-        "com.ltg.course.base.sys.mapper",
-        "com.ltg.course.base.course.mapper",
-        "com.ltg.course.base.file.mapper",
+        "com.ltg.base.sys.mapper",
+        "com.ltg.base.course.mapper",
+        "com.ltg.base.file.mapper",
 })
 public class DataSourceConfig {
 }

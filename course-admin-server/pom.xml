@@ -53,10 +53,11 @@
             </resource>
         </resources>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.5</version>
                 <configuration>
                     <mainClass>com.ltg.admin.AdminApplication</mainClass>
                     <excludes>

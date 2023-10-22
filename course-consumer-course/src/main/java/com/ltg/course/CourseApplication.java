@@ -23,10 +23,10 @@ import java.net.InetAddress;
 @Slf4j
 @SpringBootApplication(scanBasePackages = {
         "com.ltg.course",
+        "com.ltg.base",
         "com.ltg.framework"
 })
-
-@EnableSchedulinggit
+@EnableScheduling
 public class CourseApplication {
     @SneakyThrows
     public static void main(String[] args) {

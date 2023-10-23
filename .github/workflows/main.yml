@@ -95,7 +95,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           instance-ids: ${{ secrets.INSTANCE_ID }}
-          working-directory: /home/course/
+          working-directory: /home/course/consumer-course-server
           command: |
             echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-course-server-latest" >> aaa.log
             cp -rf docker-compose.tpl docker-compose.yaml

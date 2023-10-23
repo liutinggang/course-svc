@@ -1,8 +1,8 @@
 name: course-svc
-on: 
- push: 
-  branches: 
-   - main
+on:
+  push:
+    branches:
+      - main
 env:
   AWS_REGION: ap-southeast-1                      # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: course                          # set this to your Amazon ECR repository name
@@ -13,67 +13,92 @@ env:
   # set this to the name of the container in the
   # containerDefinitions section of your task definition
 jobs:
- build:
-   runs-on: ubuntu-latest
-   outputs:
-     image: ${{ steps.build-admin-server-image.outputs.image }}
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-admin-server-image.outputs.image }}
 
-   steps:
-     - name: Checkout
-       uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-     - name: Set up JDK 17
-       uses: actions/setup-java@v3
-       with:
-         java-version: '17'
-         distribution: 'temurin'
-         cache: maven
-     - name: Build with Maven
-       run: |
-         mvn -B package --file pom.xml
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: |
+          mvn -B package --file pom.xml
 
-     - name: Configure AWS credentials
-       uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
-       with:
-         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-     - name: Login to Amazon ECR
-       id: login-ecr
-       uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
-     - name: Build, tag, and push image to Amazon ECR A
-       id: build-admin-server-image
-       env:
-         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-         IMAGE_TAG: ${{ github.sha }}
-         PROJECT_NAME: course-admin-server
-       run: |
-           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest $PROJECT_NAME
-           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest
-           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
+      - name: Build, tag, and push image to Amazon ECR A
+        id: build-admin-server-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          PROJECT_NAME: course-admin-server
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest $PROJECT_NAME
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
 
 
-     - name: AWS SSM Send-Command
-       uses: peterkimzz/aws-ssm-send-command@master
-       id: deploy-admin-server-ssm
-       env:
-#         IMAGE_NAME: ${{ steps.build-admin-server-image.outputs.image }}
-         IMAGE_NAME: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest
-       with:
-         aws-region: ${{ env.AWS_REGION }}
-         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         instance-ids: ${{ secrets.INSTANCE_ID }}
-         working-directory: /home/course/admin-server
-         command: |
-           echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest" >> aaa.log
-           cp -rf docker-compose.tpl docker-compose.yaml
-           sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest#g docker-compose.yaml
-           docker-compose pull
-           docker-compose up -d
-         comment: Hello world!
-     - name: Get the outputs
-       run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
+      - name: AWS SSM Send-Command
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: deploy-admin-server-ssm
+        env:
+          #         IMAGE_NAME: ${{ steps.build-admin-server-image.outputs.image }}
+          IMAGE_NAME: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+          working-directory: /home/course/admin-server
+          command: |
+            echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest" >> aaa.log
+            cp -rf docker-compose.tpl docker-compose.yaml
+            sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest#g docker-compose.yaml
+            docker-compose pull
+            docker-compose up -d
 
+      - name: Build, tag, and push image to Amazon ECR B
+        id: build-consumer-course-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          PROJECT_NAME: consumer-course-server
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest $PROJECT_NAME
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest
+      #         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
+      - name: AWS SSM Send-Command B
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: deploy-consumer-course-server-ssm
+        env:
+          #         IMAGE_NAME: ${{ steps.build-admin-server-image.outputs.image }}
+          IMAGE_NAME: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-course-server-latest
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+          working-directory: /home/course/admin-server
+          command: |
+            echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-course-server-latest" >> aaa.log
+            cp -rf docker-compose.tpl docker-compose.yaml
+            sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-course-server-latest#g docker-compose.yaml
+            docker-compose pull
+            docker-compose up -d

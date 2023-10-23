@@ -5,6 +5,8 @@ server:
       append: true
 
 spring:
+  profiles:
+    active: ${PROFILE:dev}
   servlet:
     multipart:
       max-request-size: 10MB

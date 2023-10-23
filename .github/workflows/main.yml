@@ -81,7 +81,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           PROJECT_NAME: course-consumer-course
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest $PROJECT_NAME
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:consumer-course-server-latest $PROJECT_NAME
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest
       #         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
       - name: AWS SSM Send-Command B

@@ -15,33 +15,24 @@ jobs:
          java-version: '17'
          distribution: 'temurin'
          cache: maven
-
      - name: Build with Maven
        run: mvn -B package --file pom.xml
  docker:
       runs-on: ubuntu-latest
       needs: build
       steps:
+      - name: Cd Target Reposity
+        run: cd course-svc
       - name: Build build
         run: |
-          cd course-admin-server
-          docker build . --file Dockerfile --tag course-admin-server:$(date +%s)
-
+          docker build . --file ./course-admin-server/Dockerfile --tag course-admin-server:$(date +%s)
       - name: Build course-consumer-course
         run: |
-          cd ..
-          cd course-consumer-course
-          docker build . --file Dockerfile --tag course-consumer-course:$(date +%s)
-
+          docker build . --file ./course-consumer-course/Dockerfile --tag course-consumer-course:$(date +%s)
       - name: Build course-consumer-order
         run: |
-          cd .. 
-          cd course-consumer-order
-          docker build . --file Dockerfile --tag course-consumer-order:$(date +%s)
-
+          docker build . --file ./course-consumer-order/Dockerfile --tag course-consumer-order:$(date +%s)
       - name: Build course-consumer-order
         run: |
-          cd ..
-          cd course-login
-          docker build . --file Dockerfile --tag course-login:$(date +%s)
+          docker build . --file ./course-consumer-order/Dockerfile --tag course-login:$(date +%s)
       

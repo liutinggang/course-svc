@@ -26,10 +26,10 @@ jobs:
          distribution: 'temurin'
          cache: maven
      - name: Build with Maven
-       run: mvn -B package --file pom.xml
-
+       run: |
+          mvn -B package --file pom.xml
+          cd course-login/target
      - name:  Deploy to EB
-       run: cd course-login/target
        uses: einaregilsson/beanstalk-deploy@v20
        with:
           aws_access_key: test123456

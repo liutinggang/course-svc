@@ -21,8 +21,6 @@ jobs:
       runs-on: ubuntu-latest
       needs: build
       steps:
-      - name: Cd Target Reposity
-        run: cd course-svc
       - name: Build build
         run: |
           docker build . --file ./course-admin-server/Dockerfile --tag course-admin-server:$(date +%s)

@@ -1,0 +1,54 @@
+{
+  "family": "{yourTaskDefinitionsName}",
+  "taskRoleArn": "arn:aws:iam::{yourUserId}:role/{yourRoleName}",
+  "executionRoleArn": "arn:aws:iam::{yourUserId}:role/{yourRoleName}",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "{containerName}",
+      "image": "{yourUserId}.dkr.ecr.{yourAwsRegion}.amazonaws.com/{yourEcrName}:latest",
+      "cpu": 512,
+      "memory": 1024,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "entryPoint": [],
+      "command": [],
+      "environment": [],
+      "privileged": false,
+      "dnsServers": [],
+      "dnsSearchDomains": [],
+      "extraHosts": [],
+      "dockerSecurityOptions": [],
+      "dockerLabels": {},
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/{yourCloudWatchGroupName}",
+          "awslogs-region": "{yourAwsRegion}",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      }
+    }
+  ],
+  "placementConstraints": [
+  ],
+  "compatibilities": [
+    "FARGATE",
+    "EC2"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "tags": [
+  ]
+}

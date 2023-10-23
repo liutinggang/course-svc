@@ -17,20 +17,17 @@ jobs:
          cache: maven
      - name: Build with Maven
        run: mvn -B package --file pom.xml
- docker:
-      runs-on: ubuntu-latest
-      needs: build
-      steps:
-      - name: Build build
-        run: |
-          docker build . --file ./course-admin-server/Dockerfile --tag course-admin-server:$(date +%s)
-      - name: Build course-consumer-course
-        run: |
-          docker build . --file ./course-consumer-course/Dockerfile --tag course-consumer-course:$(date +%s)
-      - name: Build course-consumer-order
-        run: |
-          docker build . --file ./course-consumer-order/Dockerfile --tag course-consumer-order:$(date +%s)
-      - name: Build course-consumer-order
-        run: |
-          docker build . --file ./course-consumer-order/Dockerfile --tag course-login:$(date +%s)
-      
+
+     - name: Build build
+       run: |
+         docker build . --file ./course-admin-server/Dockerfile --tag course-admin-server:$(date +%s)
+     - name: Build course-consumer-course
+       run: |
+         docker build . --file ./course-consumer-course/Dockerfile --tag course-consumer-course:$(date +%s)
+     - name: Build course-consumer-order
+       run: |
+         docker build . --file ./course-consumer-order/Dockerfile --tag course-consumer-order:$(date +%s)
+     - name: Build course-consumer-order
+       run: |
+         docker build . --file ./course-consumer-order/Dockerfile --tag course-login:$(date +%s)
+    

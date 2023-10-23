@@ -60,7 +60,7 @@ jobs:
          aws-region: ${{ env.AWS_REGION }}
          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         instance-ids: ${{ secrets.INSTANCE_ID }}
+         instance-ids: i-0f0de6d3b73212feb
          working-directory: /home/course/admin-server
          command: export IMAGE_NAME=$IMAGE_NAME && docker-compose up -d
          comment: Hello world!

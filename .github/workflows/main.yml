@@ -50,7 +50,7 @@ jobs:
            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG $PROJECT_NAME
            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG
            echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG" >> $GITHUB_OUTPUT
-
+           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG"
 
      - name: AWS SSM Send-Command
        uses: peterkimzz/aws-ssm-send-command@master

@@ -20,14 +20,25 @@ jobs:
 
      - name: Build build
        run: |
-         docker build . --file ./course-admin-server/Dockerfile --tag course-admin-server:$(date +%s)
+         cd course-admin-server
+         docker build . --file Dockerfile --tag course-admin-server:$(date +%s)
+         cd ..
+
      - name: Build course-consumer-course
        run: |
-         docker build . --file ./course-consumer-course/Dockerfile --tag course-consumer-course:$(date +%s)
+         cd course-consumer-course
+         docker build . --file Dockerfile --tag course-consumer-course:$(date +%s)
+         cd ..
+
      - name: Build course-consumer-order
        run: |
-         docker build . --file ./course-consumer-order/Dockerfile --tag course-consumer-order:$(date +%s)
+         cd course-consumer-order
+         docker build . --file Dockerfile --tag course-consumer-order:$(date +%s)
+         cd ..
+
      - name: Build course-consumer-order
        run: |
-         docker build . --file ./course-consumer-order/Dockerfile --tag course-login:$(date +%s)
+         cd course-consumer-order
+         docker build . --file Dockerfile --tag course-login:$(date +%s)
+         cd ..
     

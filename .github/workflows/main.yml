@@ -49,8 +49,8 @@ jobs:
        run: |
            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG $PROJECT_NAME
            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG
-           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG" >> $GITHUB_OUTPUT
-           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG"
+           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
 
      - name: AWS SSM Send-Command
        uses: peterkimzz/aws-ssm-send-command@master
@@ -64,8 +64,9 @@ jobs:
          instance-ids: ${{ secrets.INSTANCE_ID }}
          working-directory: /home/course/admin-server
          command: |
+           echo "Image is: $IMAGE_NAME"
            cp -rf docker-compose.tpl docker-compose.yaml
-           sed -i s/IMAGE_NAME/$IMAGE_NAME/g docker-compose.yaml
+           sed -i 's/IMAGE_NAME/$IMAGE_NAME/g' docker-compose.yaml
            docker-compose up -d
          comment: Hello world!
      - name: Get the outputs

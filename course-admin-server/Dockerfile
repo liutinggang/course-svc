@@ -2,7 +2,7 @@ FROM openjdk:17-alpine3.14
 
 LABEL maintainer="nekoimi <nekoimime@gmail.com>"
 
-ARG JAR_NAME="target/app.jar"
+ARG JAR_NAME="target/course-admin-server-1.0-SNAPSHOT.jar"
 
 ENV TZ Asia/Shanghai
 ENV PROFILE dev

@@ -33,14 +33,14 @@ public class AdminCourseController {
     private final CourseService courseService;
 
 
-    @PutMapping("/api/v1/admin/course")
+    @PutMapping("/api/v1/admin/course/publish")
     @Operation(summary = "课程发布")
     public Result<Course> create(@RequestBody CreateCourseDto courseDto) {
         Course course =courseService.createCourse(courseDto);
         return Result.success(course);
     }
 
-    @PostMapping("/api/v1/admin/course")
+    @PostMapping("/api/v1/admin/course/update")
     @Operation(summary = "课程修改")
     public Result<Course> update(@RequestBody UpdateCourseDto courseDto) {
         Course course =courseService.updateCourse(courseDto);
@@ -48,7 +48,7 @@ public class AdminCourseController {
     }
 
     @Operation(summary = "课程分页查询")
-    @GetMapping("/api/v1/admin/course")
+    @GetMapping("/api/v1/admin/course/page")
     @DescribePage4Swagger
     public PageInfo<CourseVo> page(HttpServletRequest httpServletRequest,
                                    @RequestParam(required = false)Integer status,
@@ -56,7 +56,7 @@ public class AdminCourseController {
         return courseService.pageList(PageRequest.buildFromRequest(httpServletRequest),status,keyword);
     }
 
-    @GetMapping("/api/v1/admin/course/{courseId}")
+    @GetMapping("/api/v1/admin/course/detail/{courseId}")
     @Operation(summary = "课程详情")
     public CourseVo detail(@PathVariable Long courseId){
         return courseService.detail(courseId);

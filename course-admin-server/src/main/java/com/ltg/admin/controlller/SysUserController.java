@@ -30,7 +30,6 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/api/v1/sysUser")
 @RequiredArgsConstructor
 @Tag(name = "用户模块")
 public class SysUserController {
@@ -44,7 +43,7 @@ public class SysUserController {
      */
     private final SysUserService sysUserService;
 
-    @GetMapping("/list")
+    @GetMapping("/api/v1/sysUser/list")
     @Operation(summary = "分页查询:OK")
     @DescribePage4Swagger
     public PageInfo<UserPageResp> query(HttpServletRequest httpServletRequest,
@@ -53,20 +52,20 @@ public class SysUserController {
         return sysUserService.pageList(PageRequest.buildFromRequest(httpServletRequest),keyword,roleId);
     }
 
-    @GetMapping("/detail/{userId}")
+    @GetMapping("/api/v1/sysUser/detail/{userId}")
     @Operation(summary = "后台管理员获取用户详情:页面单开:OK")
     public Result<UserInfo> detail(@PathVariable Long userId) {
         return sysUserService.getUserDetail(userId);
     }
 
-    @PutMapping("/modify/role")
+    @PutMapping("/api/v1/sysUser/modify/role")
     @Operation(summary = "修改:OK")
     public Result<UserInfo> modifyUserRole(@RequestBody ModifyUserRoleReq req) {
         return sysUserService.modifyUserRole(req);
     }
 
 
-    @GetMapping("/findAll")
+    @GetMapping("/api/v1/sysUser/findAll")
     @Operation(summary = "下来菜单:Ok")
     public Result<List<SysUser>> getUsers(@RequestParam Integer position) {
         return sysUserService.getUsers(position);

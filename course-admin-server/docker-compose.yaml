@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   course-admin-server:
-    image: ${IMAGE_NAME}
+    image: IMAGE_NAME
     container_name: course-admin-server
     hostname: course-admin-server
     network_mode: host

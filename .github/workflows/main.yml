@@ -63,7 +63,10 @@ jobs:
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          instance-ids: ${{ secrets.INSTANCE_ID }}
          working-directory: /home/course/admin-server
-         command: export IMAGE_NAME=$IMAGE_NAME && docker-compose up -d
+         command: |
+           cp -rf docker-compose.tpl docker-compose.yaml
+           sed -i s/IMAGE_NAME/$IMAGE_NAME/g docker-compose.yaml
+           docker-compose up -d
          comment: Hello world!
      - name: Get the outputs
        run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"

@@ -30,7 +30,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @Operation(summary = "分页查询:OK")
-    @GetMapping("/api/v1/consumer/course")
+    @GetMapping("/api/v1/consumer/course/list")
     @DescribePage4Swagger
     public PageInfo<CourseVo> page(HttpServletRequest httpServletRequest,
                                    @RequestParam(required = false)Integer status,
@@ -38,7 +38,7 @@ public class CourseController {
         return courseService.pageList(PageRequest.buildFromRequest(httpServletRequest),status,keyword);
     }
 
-    @GetMapping("/api/v1/consumer/course/{courseId}")
+    @GetMapping("/api/v1/consumer/course/detail/{courseId}")
     @Operation(summary = "课程详情")
     public CourseVo detail(@PathVariable Long courseId){
         return courseService.detail(courseId);

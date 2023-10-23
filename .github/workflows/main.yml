@@ -6,7 +6,7 @@ on:
 env:
   AWS_REGION: ap-southeast-1                      # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: course                          # set this to your Amazon ECR repository name
-  ECS_SERVICE: yourEcsService                     # set this to your Amazon ECS service name
+  ECS_SERVICE: course-admin-server                     # set this to your Amazon ECS service name
   ECS_CLUSTER: yourEcsCluster                     # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: yourTaskDefinitionFileName # set this to the path to your Amazon ECS task definition file, e.g. task-definition.json
   CONTAINER_NAME: yourContainerName
@@ -27,18 +27,43 @@ jobs:
          cache: maven
      - name: Build with Maven
        run: |
-          mvn -B package --file pom.xml
-          cd course-login/target
-     - name:  Deploy to EB
-       uses: einaregilsson/beanstalk-deploy@v20
+         mvn -B package --file pom.xml
+
+     - name: Configure AWS credentials
+       uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
        with:
-          aws_access_key: test123456
-          aws_secret_key: awscodestar-asp-net-core-WebAppInstanceProfile-cFMhpt1qtSg3
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: ${{ env.AWS_REGION }}
 
-          application_name: course-login
-          environment_name: course-login
+     - name: Login to Amazon ECR
+       id: login-ecr
+       uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
-          version_label: 12348
-          region: "ap-southeast-1"
-          deployment_package: ./target/course-login-1.0-SNAPSHOT.jar
+     - name: Build, tag, and push image to Amazon ECR A
+       id: build-admin-server-image
+       env:
+         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         IMAGE_TAG: ${{ github.sha }}
+         PROJECT_NAME: course-admin-server
+       run: |
+           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG $PROJECT_NAME
+           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG
+           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+     - name: AWS SSM Send-Command
+       uses: peterkimzz/aws-ssm-send-command@master
+       id: deploy-admin-server-ssm
+       env:
+         IMAGE_NAME: ${{ steps.build-admin-server-image.outputs.image }}
+       with:
+         aws-region: ${{ env.AWS_REGION }}
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         instance-ids: ${{ secrets.INSTANCE_ID }}
+         working-directory: /home/course/admin-server
+         command: export IMAGE_NAME=$IMAGE_NAME && docker-compose up -d
+         comment: Hello world!
+     - name: Get the outputs
+       run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
 

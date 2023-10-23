@@ -15,3 +15,4 @@ COPY ${JAR_NAME}  app.jar
 EXPOSE 8080
 
 CMD java ${JAVA_OPS} -Dspring.profiles.active=${PROFILE} -Djava.security.egd=file:/dev/./urandom -jar app.jar
+

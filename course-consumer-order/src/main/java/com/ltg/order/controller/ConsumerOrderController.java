@@ -35,14 +35,14 @@ public class ConsumerOrderController {
     private final CourseOrderService courseOrderService;
 
 
-    @PutMapping("/api/v1/consumer/order")
+    @PutMapping("/api/v1/consumer/order/choose")
     @Operation(summary = "选课")
     public Result<CourseOrder> chooseCourse(@RequestBody ChooseCourseDto chooseCourseDto) {
         CourseOrder courseOrder = courseOrderService.chooseCourse(chooseCourseDto);
         return Result.success(courseOrder);
     }
 
-    @GetMapping("/api/v1/consumer/order")
+    @GetMapping("/api/v1/consumer/order/list")
     @DescribePage4Swagger
     @Operation(summary = "我的选课")
     public Result<PageInfo<CourseOrderVo>> pageList(HttpServletRequest httpServletRequest,
@@ -52,7 +52,7 @@ public class ConsumerOrderController {
         return Result.success(courseOrderVoPageInfo);
     }
 
-    @GetMapping("/api/v1/consumer/order/{orderId}")
+    @GetMapping("/api/v1/consumer/order/detail/{orderId}")
     @Operation(summary = "订单详情")
     public Result<CourseOrderDetailVo> orderDetail(@PathVariable Long orderId) {
         CourseOrderDetailVo courseOrderDetailVo = courseOrderService.orderDetail(orderId);

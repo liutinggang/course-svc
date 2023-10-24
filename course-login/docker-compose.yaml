@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   course-login-server:
-    image: IMAGE_NAME
+    image: course-login-server:latest
     container_name: course-login-server
     hostname: course-login-server
     network_mode: host

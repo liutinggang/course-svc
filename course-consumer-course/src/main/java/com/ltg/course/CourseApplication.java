@@ -30,23 +30,6 @@ import java.net.InetAddress;
 public class CourseApplication {
     @SneakyThrows
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(CourseApplication.class);
-        ConfigurableApplicationContext application = app.run(args);
-        Environment env = application.getEnvironment();
-        log.info("\n----------------------------------------------------------\n\t" +
-                        "Application '{}' is running! Access URLs:\n\t" +
-                        "Index: \t\thttp://{}:{}/index.html\n\t" +
-                        "Local: \t\thttp://localhost:{}\n\t" +
-                        "External: \thttp://{}:{}\n\t" +
-                        "Doc: \thttp://{}:{}/doc.html\n" +
-                        "----------------------------------------------------------",
-                env.getProperty("spring.application.name"),
-                InetAddress.getLocalHost().getHostAddress(),
-                env.getProperty("server.port"),
-                env.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
-                env.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
-                env.getProperty("server.port"));
+     SpringApplication.run(CourseApplication.class);
     }
 }

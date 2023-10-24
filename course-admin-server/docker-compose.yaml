@@ -6,7 +6,7 @@ services:
     hostname: course-admin-server
     network_mode: host
     volumes:
-      - $PWD/data:/volume:rw
+      - /home/course/data:/volume:rw
     environment:
       PROFILE: prod
     restart: always

@@ -151,8 +151,8 @@ jobs:
           instance-ids: ${{ secrets.INSTANCE_ID }}
           working-directory: /home/course/consumer-course-server
           command: |
-            echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest" >> aaa.log
+            echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-login-server-latest" >> aaa.log
             cp -rf docker-compose.tpl docker-compose.yaml
-            sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest#g docker-compose.yaml
+            sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-login-server-latest#g docker-compose.yaml
             docker-compose pull
             docker-compose up -d

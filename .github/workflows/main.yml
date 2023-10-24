@@ -54,7 +54,6 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
 
-
       - name: AWS SSM Send-Command A
         uses: peterkimzz/aws-ssm-send-command@master
         id: deploy-admin-server-ssm
@@ -99,5 +98,61 @@ jobs:
             echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-course-server-latest" >> aaa.log
             cp -rf docker-compose.tpl docker-compose.yaml
             sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-course-server-latest#g docker-compose.yaml
+            docker-compose pull
+            docker-compose up -d
+
+      - name: Build, tag, and push image to Amazon ECR C
+        id: build-consumer-order-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          PROJECT_NAME: course-consumer-order
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:consumer-order-server-latest $PROJECT_NAME
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:consumer-order-server-latest
+      - name: AWS SSM Send-Command C
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: deploy-consumer-order-server-ssm
+        env:
+          IMAGE_NAME: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+          working-directory: /home/course/consumer-course-server
+          command: |
+            echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest" >> aaa.log
+            cp -rf docker-compose.tpl docker-compose.yaml
+            sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest#g docker-compose.yaml
+            docker-compose pull
+            docker-compose up -d
+            
+
+      - name: Build, tag, and push image to Amazon ECR D
+        id: build-course-login-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          PROJECT_NAME: course-login
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:course-login-server-latest $PROJECT_NAME
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:course-login-server-latest
+
+      - name: AWS SSM Send-Command D
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: deploy-course-login-server-ssm
+        env:
+          IMAGE_NAME: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-login-server-latest
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+          working-directory: /home/course/consumer-course-server
+          command: |
+            echo "Image is: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest" >> aaa.log
+            cp -rf docker-compose.tpl docker-compose.yaml
+            sed -i s#IMAGE_NAME#642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:consumer-order-server-latest#g docker-compose.yaml
             docker-compose pull
             docker-compose up -d

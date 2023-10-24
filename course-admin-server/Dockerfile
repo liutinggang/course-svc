@@ -6,7 +6,7 @@ ARG JAR_NAME="target/course-admin-server-1.0-SNAPSHOT.jar"
 
 ENV TZ Asia/Shanghai
 ENV PROFILE dev
-ENV JAVA_OPS -server -Xms128m -Xmx4g -XX:CompressedClassSpaceSize=128m -XX:MetaspaceSize=200m -XX:MaxMetaspaceSize=200m
+ENV JAVA_OPS -server -Xms128m -Xmx512m -XX:CompressedClassSpaceSize=128m -XX:MetaspaceSize=200m -XX:MaxMetaspaceSize=200m
 
 WORKDIR workspace
 

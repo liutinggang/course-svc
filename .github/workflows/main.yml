@@ -55,11 +55,10 @@ jobs:
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
 
 
-      - name: AWS SSM Send-Command
+      - name: AWS SSM Send-Command A
         uses: peterkimzz/aws-ssm-send-command@master
         id: deploy-admin-server-ssm
         env:
-          #         IMAGE_NAME: ${{ steps.build-admin-server-image.outputs.image }}
           IMAGE_NAME: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-admin-server-latest
         with:
           aws-region: ${{ env.AWS_REGION }}

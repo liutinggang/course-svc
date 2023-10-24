@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   consumer-order-server:
-    image: IMAGE_NAME
+    image: course-order-server
     container_name: consumer-order-server
     hostname: consumer-order-server
     network_mode: host

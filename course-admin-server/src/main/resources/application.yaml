@@ -42,7 +42,7 @@ spring:
       timeout: 10000
   flyway:
     table: migrations
-    enabled: false
+    enabled: true
     baseline-on-migrate: true
     clean-disabled: true
     sql-migration-prefix: v

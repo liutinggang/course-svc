@@ -1,6 +1,7 @@
 package com.ltg.base.sys.service.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
             //存入redis
             String userId = userInfo.getId().toString();
             String key = String.format("userId:%s", userId);
-            String userInfoJson = objectMapper.writeValueAsString(userInfo);
+            String userInfoJson = JSONObject.toJSONString(userInfo);
             redisTemplate.opsForValue().set(key, userInfoJson, 3, TimeUnit.HOURS);
             //生产token
             String token = JwtUtil.createToken(userId);
@@ -82,8 +83,6 @@ public class LoginServiceImpl implements LoginService {
             return Result.success(loginInfo);
         } catch (NullPointerException | UnsupportedEncodingException | NoSuchAlgorithmException e) {
             throw new LoginException("密码错误");
-        } catch (JsonProcessingException e) {
-            throw new LoginException("json解析失败");
         }
     }
 

@@ -78,7 +78,7 @@ public class SysRoleController {
     }
 
     @Operation(summary = "下拉列表:OK")
-    @GetMapping("/getAll")
+    @GetMapping("/api/v1/sysRole/getAll")
     public Result<List<SysRole>> getAll() {
         return Result.success(sysRoleService.list());
     }

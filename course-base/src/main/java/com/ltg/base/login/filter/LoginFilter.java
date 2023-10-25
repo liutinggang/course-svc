@@ -2,6 +2,7 @@ package com.ltg.base.login.filter;
 
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ltg.base.sys.data.response.CurrentUserHolder;
 import com.ltg.base.sys.data.response.UserInfo;
@@ -16,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -82,7 +82,7 @@ public class LoginFilter implements Filter, Ordered {
             // 从redis中拿token对应user
             String key = String.format("%s:%s", Constant.REDIS_USER_PREFIX.getKey(), body.get("id"));
             String json = (String) redisTemplate.opsForValue().get(key);
-            UserInfo userInfo = objectMapper.readValue(json, UserInfo.class);
+            UserInfo userInfo = JSONObject.parseObject(json, UserInfo.class);
             if (userInfo == null) {
                 returnNoLogin(servletResponse);
                 return;

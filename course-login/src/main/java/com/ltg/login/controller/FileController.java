@@ -1,4 +1,4 @@
-package com.ltg.base.file.controller;
+package com.ltg.login.controller;
 
 import com.ltg.base.file.entity.FileInfo;
 import com.ltg.base.file.service.FileInfoService;

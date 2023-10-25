@@ -70,6 +70,8 @@ public class SysRoleController {
         return sysRoleService.modify(roleId, req);
     }
 
+
+
     @Operation(summary = "角色删除:OK")
     @DeleteMapping("/api/v1/sysRole/{roleId}/delete")
     public Result<Void> delete(@PathVariable Long roleId) {
@@ -78,7 +80,7 @@ public class SysRoleController {
     }
 
     @Operation(summary = "下拉列表:OK")
-    @GetMapping("/getAll")
+    @GetMapping("/api/v1/sysRole/getAll")
     public Result<List<SysRole>> getAll() {
         return Result.success(sysRoleService.list());
     }

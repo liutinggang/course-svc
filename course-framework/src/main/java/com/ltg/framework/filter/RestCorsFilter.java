@@ -14,6 +14,7 @@ import java.io.IOException;
 
 /**
  * 配置跨域
+ * @author 24957
  */
 @Component
 @NoArgsConstructor

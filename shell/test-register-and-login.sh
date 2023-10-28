@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# 用户注册登录测试脚本
+
 # 普通用户注册测试
 function test_register {
     register_url="http://18.142.149.25/course-login-api/api/v1/account/register"

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 发布课程测试
 # 登录测试
 function test_login {
     login_url="http://18.142.149.25/course-login-api/api/v1/account/login"

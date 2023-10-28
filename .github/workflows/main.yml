@@ -143,12 +143,14 @@ jobs:
       image: ${{ steps.build-admin-server-image.outputs.image }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - run: |
-          ant test /home/runner/work/course-svc/build.xml
+      - run: mvn --batch-mode --update-snapshots verify
+      - run: mkdir staging && cp course-login/target/*.jar staging
       - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: staging

@@ -1,29 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="course-svc" default="test" basedir=".">
-    <!-- java源代码目录 -->
-    <property name="src.dir" location="course-login/src/main/java"/>
-    <!-- 构建存放目录 -->
-    <property name="test.dir" location="course-login/src/test/java"/>
-    <!-- class文件存放目录 -->
-    <property name="build.dir" value="build" />
-
-    <!-- 定义测试任务 -->
+<project xmlns:ac="antlib:net.sf.antcontrib" name="course-svc" default="test" basedir="."  >
     <target name="test">
-        <mkdir dir="${build.dir}/test" />
-        <javac srcdir="${test.dir}" destdir="${build.dir}/test" />
-        <junit printsummary="yes" fork="true">
-            <formatter type="plain" />
-            <classpath>
-                <pathelement location="${build.dir}" />
-                <pathelement location="${build.dir}/test" />
-            </classpath>
-            <batchtest>
-                <fileset dir="${test.dir}">
-                    <include name="**/LoginTest.java" />
-                </fileset>
-            </batchtest>
-        </junit>
+        <property name="request.body" value='{"username":"admin","password":"123456"}' />
+        <http url="http://18.142.149.25/course-login-api/api/v1/account/login"
+              method="POST"
+              status="200"
+              verbose="true"
+              failonerror="true">
+            <header name="Content-Type" value="application/json" />
+            <entity>${request.body}</entity>
+        </http>
     </target>
-
 
 </project>

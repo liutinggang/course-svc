@@ -150,6 +150,5 @@ jobs:
           distribution: 'temurin'
 
       - run: |
-          cd /home/runner/work/course-svc
-          ant test build.xml
+          ant test /home/runner/work/course-svc/build.xml
       - uses: actions/upload-artifact@v3

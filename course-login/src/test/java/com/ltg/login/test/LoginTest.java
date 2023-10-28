@@ -27,14 +27,12 @@ public class LoginTest {
     @Test
     public void testAdd() {
 
-        // ×¼±¸ÇëÇóÌå
+        // å‡†å¤‡è¯·æ±‚ä½“
         LoginParam loginParam = new LoginParam();
         loginParam.setUsername("admin");
         loginParam.setPassword("123456");
-        // ·¢ËÍPOSTÇëÇó²¢»ñÈ¡ÏìÓ¦
         String loginUrl = "http://18.142.149.25/course-login-api/api/v1/account/login";
         ResponseEntity<String> response = restTemplate.postForEntity(loginUrl,loginParam, String.class);
-        // ÑéÖ¤ÏìÓ¦×´Ì¬Âë
         assertEquals(HttpStatus.OK, response.getStatusCode());
         String body = response.getBody();
         System.out.println(body);

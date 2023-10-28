@@ -169,5 +169,5 @@ jobs:
       - name: Run performance test
         run: |
           pwd
-          ./apache-jmeter-5.6.2/bin/jmeter -n -t /JMeter/testplan.jmx -l JMeter/results.jtl
+          ./apache-jmeter-5.6.2/bin/jmeter -n -t /home/runner/work/course-svc/course-svc/JMeter/testplan.jmx -l /home/runner/work/course-svc/course-svc/JMeter/results.jtl
           cat JMeter/results.jtl

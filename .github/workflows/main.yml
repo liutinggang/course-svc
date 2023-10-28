@@ -168,5 +168,6 @@ jobs:
           tar -xzf apache-jmeter-5.6.2.tgz
       - name: Run performance test
         run: |
+          pwd
           ./apache-jmeter-5.6.2/bin/jmeter -n -t /JMeter/testplan.jmx -l JMeter/results.jtl
           cat JMeter/results.jtl

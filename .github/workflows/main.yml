@@ -142,8 +142,8 @@ jobs:
     outputs:
       image: ${{ steps.build-admin-server-image.outputs.image }}
     steps:
-      - - name: Checkout
-          uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: TEST INTERFACE
         run: |
           chmod u+x test.sh

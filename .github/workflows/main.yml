@@ -150,5 +150,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - run: ant -noinput -buildfile build.xml
+      - run: ant test build.xml
       - uses: actions/upload-artifact@v3

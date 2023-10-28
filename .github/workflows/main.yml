@@ -137,7 +137,24 @@ jobs:
   #            docker-compose pull
   #            docker-compose down
   #            docker-compose up -d
-  test:
+#  testOne:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      image: ${{ steps.build-admin-server-image.outputs.image }}
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: TEST INSERT COURSE
+#        run: |
+#          chmod u+x test-insert-course.sh
+#          ./test-insert-course.sh
+#
+#      - name: TEST REGISTER USER
+#        run: |
+#          chmod u+x test-register-and-login.sh
+#          ./test-register-and-login.sh
+  testTwo:
     runs-on: ubuntu-latest
     outputs:
       image: ${{ steps.build-admin-server-image.outputs.image }}
@@ -145,12 +162,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: TEST INSERT COURSE
+      - name: Install JMeter
         run: |
-          chmod u+x test-insert-course.sh
-          ./test-insert-course.sh
-
-      - name: TEST REGISTER USER
+          wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz
+          tar -xzf apache-jmeter-5.6.2.tgz
+      - name: Run performance test
         run: |
-          chmod u+x test-register-and-login.sh
-          ./test-register-and-login.sh
+          ./apache-jmeter-5.6.2/bin/jmeter -n -t /JMeter/testplan.jmx -l JMeter/results.jtl
+          cat JMeter/results.jtl

@@ -142,9 +142,10 @@ jobs:
     outputs:
       image: ${{ steps.build-admin-server-image.outputs.image }}
     steps:
-      - name: do LOGIN
+      - - name: Checkout
+          uses: actions/checkout@v4
+      - name: TEST INTERFACE
         run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -d '{"username":"admin","password":"123456"}' \
-            http://18.142.149.25/course-login-api/api/v1/account/login
+          chmod u+x test.sh
+          ./test.sh
+          

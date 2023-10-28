@@ -7,14 +7,8 @@
     <!-- class文件存放目录 -->
     <property name="build.dir" value="build" />
 
-    <!-- 定义编译任务 -->
-    <target name="compile">
-        <mkdir dir="${build.dir}" />
-        <javac srcdir="${src.dir}" destdir="${build.dir}" />
-    </target>
-
     <!-- 定义测试任务 -->
-    <target name="test" depends="compile">
+    <target name="test">
         <mkdir dir="${build.dir}/test" />
         <javac srcdir="${test.dir}" destdir="${build.dir}/test" />
         <junit printsummary="yes" fork="true">

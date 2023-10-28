@@ -149,5 +149,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - run: ant test /home/runner/work/course-svc/build.xml
+      - run: |
+          cd /home/runner/work/course-svc
+          ant test build.xml
       - uses: actions/upload-artifact@v3

@@ -32,7 +32,7 @@ public class LoginTest {
         loginParam.setUsername("admin");
         loginParam.setPassword("123456");
         // 发送POST请求并获取响应
-        String loginUrl = "http://192.168.0.103:9210/course-login-api/api/v1/account/login";
+        String loginUrl = "http://18.142.149.25/course-login-api/api/v1/account/login";
         ResponseEntity<String> response = restTemplate.postForEntity(loginUrl,loginParam, String.class);
         // 验证响应状态码
         assertEquals(HttpStatus.OK, response.getStatusCode());

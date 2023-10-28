@@ -142,7 +142,7 @@ jobs:
     outputs:
       image: ${{ steps.build-admin-server-image.outputs.image }}
     steps:
-      - name: Send Login Request
+      - name: do LOGIN
         run: |
           curl -X POST \
             -H "Content-Type: application/json" \

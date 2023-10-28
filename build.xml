@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="course-svc" default="test" basedir=".">
+    <!-- java源代码目录 -->
+    <property name="src.dir" location="course-login/src/main/java"/>
+    <!-- 构建存放目录 -->
+    <property name="test.dir" location="course-login/src/test/java"/>
+    <!-- class文件存放目录 -->
+    <property name="build.dir" value="build" />
+
+    <!-- 定义编译任务 -->
+    <target name="compile">
+        <mkdir dir="${build.dir}" />
+        <javac srcdir="${src.dir}" destdir="${build.dir}" />
+    </target>
+
+    <!-- 定义测试任务 -->
+    <target name="test" depends="compile">
+        <mkdir dir="${build.dir}/test" />
+        <javac srcdir="${test.dir}" destdir="${build.dir}/test" />
+        <junit printsummary="yes" fork="true">
+            <formatter type="plain" />
+            <classpath>
+                <pathelement location="${build.dir}" />
+                <pathelement location="${build.dir}/test" />
+            </classpath>
+            <batchtest>
+                <fileset dir="${test.dir}">
+                    <include name="**/LoginTest.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+
+</project>

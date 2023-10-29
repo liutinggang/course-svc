@@ -1,16 +1,22 @@
 package com.ltg.base.course.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ltg.base.course.data.dto.CreateCourseDto;
 import com.ltg.base.course.data.dto.UpdateCourseDto;
 import com.ltg.base.course.data.vo.CourseVo;
 import com.ltg.base.course.entity.Course;
+import com.ltg.base.course.entity.CourseOrder;
+import com.ltg.base.course.mapper.CourseOrderMapper;
 import com.ltg.base.file.entity.FileInfo;
 import com.ltg.base.course.mapper.CourseMapper;
 import com.ltg.base.course.service.CourseService;
 import com.ltg.base.file.mapper.FileInfoMapper;
+import com.ltg.base.sys.data.response.CurrentUserHolder;
+import com.ltg.base.sys.data.response.UserInfo;
+import com.ltg.framework.annotation.CurrentUser;
 import com.ltg.framework.error.exception.BaseException;
 import com.ltg.framework.util.http.PageInfo;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +43,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     private final CourseMapper courseMapper;
     private final FileInfoMapper fileInfoMapper;
+
+    private final CourseOrderMapper courseOrderMapper;
 
     @Override
     public Course createCourse(CreateCourseDto courseDto) {
@@ -83,5 +91,24 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         course.setPriceType(courseDto.getPriceType());
         this.updateById(course);
         return course;
+    }
+
+    @Override
+    public PageInfo<CourseVo> consumerList(Page<CourseVo> page, Integer status, String keyword) {
+        UserInfo currentUser = CurrentUserHolder.getCurrentUser();
+        Long id = currentUser.getId();
+        Page<CourseVo> courseVoPage = courseMapper.consumerList(page, id, status, keyword);
+        List<CourseVo> courseVos = courseVoPage.getRecords();
+        for (CourseVo courseVo : courseVos) {
+            LambdaQueryWrapper<CourseOrder> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(CourseOrder::getCourseId, courseVo.getId());
+            wrapper.eq(CourseOrder::getUserId,CurrentUserHolder.getCurrentUser().getId());
+            CourseOrder courseOrder = courseOrderMapper.selectOne(wrapper);
+            if(Objects.nonNull(courseOrder)){
+                courseVo.setOrderId(courseOrder.getId());
+            }
+        }
+        return new PageInfo<>(courseVoPage);
+
     }
 }

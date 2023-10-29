@@ -41,7 +41,7 @@ spring:
           #连接超时时间
       timeout: 10000
 mybatis-plus:
-  mapper-locations: classpath*:com/ltg/course/base/**/mapper/xml/**.xml
+  mapper-locations: classpath*:com/ltg/base/**/mapper/xml/**.xml
 knife4j:
   enable: true
   setting:

@@ -35,7 +35,7 @@ public class CourseController {
     public PageInfo<CourseVo> page(HttpServletRequest httpServletRequest,
                                    @RequestParam(required = false)Integer status,
                                    @RequestParam(required = false) String keyword) {
-        return courseService.pageList(PageRequest.buildFromRequest(httpServletRequest),status,keyword);
+        return courseService.consumerList(PageRequest.buildFromRequest(httpServletRequest),status,keyword);
     }
 
     @GetMapping("/api/v1/consumer/course/detail/{courseId}")

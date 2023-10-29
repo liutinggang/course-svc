@@ -13,7 +13,8 @@ env:
   # set this to the name of the container in the
   # containerDefinitions section of your task definition
 jobs:
-  #  build:
+  # 编译打包
+#  build:
   #    runs-on: ubuntu-latest
   #    outputs:
   #      image: ${{ steps.build-admin-server-image.outputs.image }}
@@ -137,6 +138,7 @@ jobs:
   #            docker-compose pull
   #            docker-compose down
   #            docker-compose up -d
+  # 集成测试(功能测试)
 #  testOne:
 #    runs-on: ubuntu-latest
 #    outputs:
@@ -147,13 +149,14 @@ jobs:
 #
 #      - name: TEST INSERT COURSE
 #        run: |
-#          chmod u+x test-insert-course.sh
-#          ./test-insert-course.sh
+#          chmod u+x ./shell/test-insert-course.sh
+#          ./shell/test-insert-course.sh
 #
 #      - name: TEST REGISTER USER
 #        run: |
-#          chmod u+x test-register-and-login.sh
-#          ./test-register-and-login.sh
+#          chmod u+x ./shell/test-register-and-login.sh
+#          ./shell/test-register-and-login.sh
+  # 性能测试
   testTwo:
     runs-on: ubuntu-latest
     outputs:
@@ -166,6 +169,7 @@ jobs:
         run: |
           wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz
           tar -xzf apache-jmeter-5.6.2.tgz
+
       - name: Run performance test
         run: |
           pwd

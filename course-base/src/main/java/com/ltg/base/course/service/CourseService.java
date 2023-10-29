@@ -27,5 +27,9 @@ public interface CourseService extends IService<Course> {
     CourseVo detail(Long courseId);
 
     Course updateCourse(UpdateCourseDto courseDto);
-    
+
+    PageInfo<CourseVo> consumerList(Page<CourseVo> objectPage, Integer status, String keyword);
+
+
+
 }

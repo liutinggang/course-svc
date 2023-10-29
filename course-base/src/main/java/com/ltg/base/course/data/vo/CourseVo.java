@@ -22,5 +22,7 @@ import java.util.List;
 public class CourseVo extends Course {
     @Schema(description = "文件信息", type = "string", example = "")
     private List<FileInfo> fileInfos;
+    private Long orderId;
+
 
 }

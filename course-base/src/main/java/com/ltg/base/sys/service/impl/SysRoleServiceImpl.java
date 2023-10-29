@@ -45,6 +45,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public Result<SysRole> modify(Long roleId, ModifyRoleReq req) {
         SysRole sysRole = sysRoleMapper.selectById(roleId);
         sysRole.setRoleName(req.getRoleName());
+        sysRole.setRoleCode(req.getRoleCode());
         sysRoleMapper.updateById(sysRole);
         return Result.success(sysRole);
     }

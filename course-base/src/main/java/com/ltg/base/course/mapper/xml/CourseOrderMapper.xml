@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ltg.base.course.mapper.CourseOrderMapper">
+    <select id="myOrderList" resultType="com.ltg.base.course.data.vo.CourseOrderVo">
+        select o.id,
+        o.create_time as createTime,
+        o.user_id as userId,
+        o.course_id as courseId,
+        o.order_status as orderStatus,
+        c.course_name as courseName
+        from b_course_order as o
+        left join b_course as c on c.id = o.course_id
+        where o.deleted = 0
+        AND o.user_id =#{userId}
+        <if test="status != null">
+            o.status = #{status}
+        </if>
+        <if test="keyword != null and keyword != '' ">
+            and c.course_name like CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
 
 
     <select id="pageList" resultType="com.ltg.base.course.data.vo.CourseOrderVo">

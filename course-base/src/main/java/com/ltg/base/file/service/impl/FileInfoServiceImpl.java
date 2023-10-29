@@ -74,8 +74,8 @@ public class FileInfoServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> i
         fileInfo.setExtName(extension);
         fileInfo.setSize(String.valueOf(fileSize / 1024));
         fileInfo.setPath(filename);
-        fileInfo.setUrl(domain + "/api/v1/file/" + mediaId);
-        fileInfo.setDownloadUrl(domain + "/api/v1/file/" + mediaId + "/download");
+        fileInfo.setUrl(domain + "/course-login-api/api/v1/file/" + mediaId);
+        fileInfo.setDownloadUrl(domain + "/course-login-api/api/v1/file/" + mediaId + "/download");
         this.save(fileInfo);
         FileInfo mediaInfo1 = this.getById(mediaId);
         return mediaInfo1;

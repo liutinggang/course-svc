@@ -20,4 +20,9 @@ public interface CourseMapper extends BaseMapper<Course> {
     Page<CourseVo> list(Page<CourseVo> page,
                         @Param("status") Integer status, @Param("keyword") String keyword);
 
+    Page<CourseVo> consumerList(Page<CourseVo> page,
+                                @Param("userId") Long userId,
+                                @Param("status") Integer status,
+                                @Param("keyword") String keyword);
+
 }

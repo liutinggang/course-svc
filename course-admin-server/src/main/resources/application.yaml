@@ -12,7 +12,7 @@ spring:
   profiles:
     active: ${PROFILE:dev}
   application:
-    name: urban-server
+    name: course-admin-server
   jackson:
     default-property-inclusion:
       date-format: "yyyy-MM-dd HH:mm:ss"
@@ -42,7 +42,7 @@ spring:
       timeout: 10000
   flyway:
     table: migrations
-    enabled: true
+    enabled: false
     baseline-on-migrate: true
     clean-disabled: true
     sql-migration-prefix: v

@@ -22,4 +22,10 @@ public interface CourseOrderMapper extends BaseMapper<CourseOrder> {
                                  @Param("status") Integer status,
                                  @Param("keyword") String keyword);
 
+    Page<CourseOrderVo> myOrderList(Page<CourseOrderVo> objectPage,
+                                    @Param("userId") Long userId,
+                                    @Param("status") Integer status,
+                                    @Param("keyword") String keyword);
+
+
 }

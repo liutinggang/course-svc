@@ -1,5 +1,7 @@
 package com.ltg.base.course.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ltg.base.course.data.dto.ChooseCourseDto;
@@ -10,12 +12,15 @@ import com.ltg.base.course.entity.CourseOrder;
 import com.ltg.base.course.mapper.CourseOrderMapper;
 import com.ltg.base.course.service.CourseService;
 import com.ltg.base.course.service.CourseOrderService;
+import com.ltg.framework.error.exception.BaseException;
 import com.ltg.framework.util.http.PageInfo;
 import com.ltg.base.sys.data.response.CurrentUserHolder;
 import com.ltg.base.sys.data.response.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * <p> ClassName: CourseOrderServiceImpl </p>
@@ -37,6 +42,13 @@ public class CourseOrderServiceImpl extends ServiceImpl<CourseOrderMapper, Cours
     public CourseOrder chooseCourse(ChooseCourseDto chooseCourseDto) {
         UserInfo currentUser = CurrentUserHolder.getCurrentUser();
         Long userId = currentUser.getId();
+        LambdaQueryWrapper<CourseOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(CourseOrder::getCourseId, chooseCourseDto.getCourseId());
+        wrapper.eq(CourseOrder::getUserId, userId);
+        boolean exists = this.exists(wrapper);
+        if (exists) {
+            throw new BaseException("改用户已经选过此科目了!");
+        }
         CourseOrder courseOrder = CourseOrder.builder()
                 .courseId(chooseCourseDto.getCourseId())
                 .userId(userId)
@@ -63,5 +75,12 @@ public class CourseOrderServiceImpl extends ServiceImpl<CourseOrderMapper, Cours
         courseOrderDetailVo.setCourse(detail);
         return courseOrderDetailVo;
 
+    }
+
+    @Override
+    public PageInfo<CourseOrderVo> myOrderList(Page<CourseOrderVo> objectPage, Integer status, String keyword) {
+        Long id = CurrentUserHolder.getCurrentUser().getId();
+        Page<CourseOrderVo> courseOrderVoIPage = courseOrderMapper.myOrderList(objectPage,id, status, keyword);
+        return new PageInfo<>(courseOrderVoIPage);
     }
 }

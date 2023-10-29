@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ac="antlib:net.sf.antcontrib" name="course-svc" default="test" basedir="."  >
+    <target name="test">
+        <property name="request.body" value='{"username":"admin","password":"123456"}' />
+        <http url="http://18.142.149.25/course-login-api/api/v1/account/login"
+              method="POST"
+              status="200"
+              verbose="true"
+              failonerror="true">
+            <header name="Content-Type" value="application/json" />
+            <entity>${request.body}</entity>
+        </http>
+    </target>
+
+</project>

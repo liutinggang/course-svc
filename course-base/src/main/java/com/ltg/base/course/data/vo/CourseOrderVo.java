@@ -17,6 +17,5 @@ import lombok.Data;
 @Data
 public class CourseOrderVo extends CourseOrder {
     @Schema(description = "课程名称", type = "string", example = "")
-
     private String courseName;
 }

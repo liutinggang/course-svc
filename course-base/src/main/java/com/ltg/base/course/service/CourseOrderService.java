@@ -28,5 +28,8 @@ public interface CourseOrderService extends IService<CourseOrder> {
 
     CourseOrderDetailVo orderDetail(Long orderId);
 
-    
+
+    PageInfo<CourseOrderVo> myOrderList(Page<CourseOrderVo> objectPage, Integer status, String keyword);
+
+
 }

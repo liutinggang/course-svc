@@ -45,18 +45,12 @@ public class ConsumerOrderController {
     @GetMapping("/api/v1/consumer/order/list")
     @DescribePage4Swagger
     @Operation(summary = "我的选课")
-    public Result<PageInfo<CourseOrderVo>> pageList(HttpServletRequest httpServletRequest,
+    public PageInfo<CourseOrderVo> pageList(HttpServletRequest httpServletRequest,
                                                     @RequestParam(required = false) Integer status,
                                                     @RequestParam(required = false) String keyword) {
-        PageInfo<CourseOrderVo> courseOrderVoPageInfo = courseOrderService.pageList(PageRequest.buildFromRequest(httpServletRequest), status, keyword);
-        return Result.success(courseOrderVoPageInfo);
+        return courseOrderService.myOrderList(PageRequest.buildFromRequest(httpServletRequest), status, keyword);
     }
 
-    @GetMapping("/api/v1/consumer/order/detail/{orderId}")
-    @Operation(summary = "订单详情")
-    public Result<CourseOrderDetailVo> orderDetail(@PathVariable Long orderId) {
-        CourseOrderDetailVo courseOrderDetailVo = courseOrderService.orderDetail(orderId);
-        return Result.success(courseOrderDetailVo);
-    }
+
 
 }

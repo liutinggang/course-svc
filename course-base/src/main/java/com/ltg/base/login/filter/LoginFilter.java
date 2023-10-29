@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * <p> ClassName: LoginFilter </p>
@@ -47,16 +48,13 @@ public class LoginFilter implements Filter, Ordered {
     private final RedisTemplate<String, Object> redisTemplate;
     private final LoginProperties loginProperties;
 
-    private final ObjectMapper objectMapper;
-
     // 2.2 创建路径匹配器对象
-    private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
 
     public LoginFilter(RedisTemplate<String, Object> redisTemplate, LoginProperties loginProperties, ObjectMapper objectMapper) {
         this.redisTemplate = redisTemplate;
         this.loginProperties = loginProperties;
-        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -68,6 +66,7 @@ public class LoginFilter implements Filter, Ordered {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         // 过滤路径
         String requestURI = httpServletRequest.getRequestURI();
+
         boolean contains = checkUrl(loginProperties.getFilterExcludeUrl(), requestURI);
         if (!contains) {
             // 获取token
@@ -101,6 +100,8 @@ public class LoginFilter implements Filter, Ordered {
      * @return 判断某个请求是否在不登录的时候就可以放行
      */
     private boolean checkUrl(List<String> urls, String requestURI) {
+        String quote = Pattern.quote("/course-login-api");
+        requestURI = requestURI.replaceFirst("^" + quote,"");
         List<String> list = new ArrayList<>();
         list.add("/swagger-ui.html");
         list.add("/swagger-resources");
@@ -116,7 +117,7 @@ public class LoginFilter implements Filter, Ordered {
         urls.addAll(list);
         for (String url : urls) {
             // 匹配 本次请求的requestURI  是否符合 url
-            if (antPathMatcher.match(url, requestURI)) {
+            if (ANT_PATH_MATCHER.match(url, requestURI)) {
                 return true;
             }
         }

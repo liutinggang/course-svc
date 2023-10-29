@@ -32,7 +32,7 @@ public class FileController {
 
     @PostMapping("/api/v1/file/upload")
     @Operation(summary = "上传")
-    public FileInfo upload(@RequestParam("file") MultipartFile file) {
+    public FileInfo upload(@RequestPart("file") MultipartFile file) {
         return fileInfoService.create(file);
     }
 

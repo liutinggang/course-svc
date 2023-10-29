@@ -1,8 +1,12 @@
 package com.ltg.base.sys.service.impl;
 
 
+<<<<<<< HEAD
 import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSON;
+=======
+import com.alibaba.fastjson.JSONObject;
+>>>>>>> 642ed20440a3211fa67ba1ffcbb798529a2dd4cd
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,8 +79,13 @@ public class LoginServiceImpl implements LoginService {
             //存入redis
             String userId = userInfo.getId().toString();
             String key = String.format("userId:%s", userId);
+<<<<<<< HEAD
             String jsonString = JSON.toJSONString(userInfo);
             redisTemplate.opsForValue().set(key, jsonString, 3, TimeUnit.HOURS);
+=======
+            String userInfoJson = JSONObject.toJSONString(userInfo);
+            redisTemplate.opsForValue().set(key, userInfoJson, 3, TimeUnit.HOURS);
+>>>>>>> 642ed20440a3211fa67ba1ffcbb798529a2dd4cd
             //生产token
             String token = JwtUtil.createToken(userId);
             LoginInfo loginInfo = new LoginInfo();

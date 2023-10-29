@@ -1,17 +1,17 @@
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://172.31.38.10:3306/course?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:p6spy:mysql://18.142.149.25:3306/course?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
   data:
     redis:
       database: 0
-      host: 172.31.38.10
+      host: 18.142.149.25
       port: 6379
       password: 123456
 app:
   storage:
     # 配置本地文件储存库位置
     local-prefix: /volume
-    domain: http://127.0.0.1:9999
+    domain: http://18.142.149.25/course-login-api/

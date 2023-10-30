@@ -50,8 +50,9 @@ knife4j:
 app:
   login:
     filter-excludeUrl:
-      - /api/v1/account/**
-      - /api/v1/file/**
+      - /api/v1/account/login
+      - /api/v1/account/register
+      - /api/v1/file/upload
     filter-includeUrl:
       - /api/v1/**
   storage:

@@ -4,6 +4,7 @@ import com.ltg.base.sys.data.param.LoginParam;
 import com.ltg.base.sys.data.request.ModifyPasswordReq;
 import com.ltg.base.sys.data.request.ModifyUserInfoReq;
 import com.ltg.base.sys.data.request.RegisterReq;
+import com.ltg.base.sys.data.response.CurrentUserHolder;
 import com.ltg.framework.util.http.Result;
 import com.ltg.framework.annotation.CurrentUser;
 
@@ -50,8 +51,9 @@ public class AccountController {
 
     @GetMapping("/api/v1/account/userInfo")
     @Operation(summary = "获取用户信息")
-    public Result<UserInfo> getUserInfo(@Parameter(hidden = true)  @CurrentUser UserInfo userInfo) {
-        return Result.success(userInfo);
+    public Result<UserInfo> getUserInfo( ) {
+        UserInfo currentUser = CurrentUserHolder.getCurrentUser();
+        return Result.success(currentUser);
     }
 
     @PostMapping("/api/v1/account/modify/password")

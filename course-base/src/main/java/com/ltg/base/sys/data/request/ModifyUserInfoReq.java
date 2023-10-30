@@ -22,6 +22,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ModifyUserInfoReq implements Serializable {
+    private String username;
 
     @Schema(title = "手机号")
     private String mobile;

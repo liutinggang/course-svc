@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ltg.base.file.entity.FileInfo;
+import com.ltg.base.file.service.FileInfoService;
 import com.ltg.base.sys.data.param.LoginParam;
 import com.ltg.base.sys.data.request.ModifyPasswordReq;
 import com.ltg.base.sys.data.request.ModifyUserInfoReq;
@@ -54,6 +56,7 @@ public class LoginServiceImpl implements LoginService {
 
     private final ObjectMapper objectMapper;
 
+    private final FileInfoService fileInfoService;
     public SysUser getByUsername(String username) {
         return sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
     }
@@ -70,6 +73,8 @@ public class LoginServiceImpl implements LoginService {
                 throw new LoginException("密码错误");
             }
             UserInfo userInfo = sysUserService.getUserInfo(user.getId());
+            FileInfo fileInfo = fileInfoService.getById(userInfo.getAvatarId());
+            userInfo.setAvatarUrl(fileInfo.getUrl());
             //存入redis
             String userId = userInfo.getId().toString();
             String key = String.format("userId:%s", userId);
@@ -145,8 +150,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<UserInfo> modifyUserInfo(ModifyUserInfoReq req) {
-
-        SysUser sysUser = sysUserMapper.selectByUsername(req.getMobile());
+        LambdaQueryWrapper<SysUser> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(SysUser::getUsername,req.getUsername());
+        SysUser sysUser = sysUserMapper.selectOne(wrapper);
         sysUser.setMobile(req.getMobile());
         sysUser.setDisplayName(req.getRealName());
         sysUser.setIdentityCode(req.getIdentityCode());

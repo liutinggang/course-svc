@@ -50,7 +50,7 @@ knife4j:
 app:
   login:
     filter-excludeUrl:
-      - /api/v1/account/**
+      -
       - /api/v1/file/**
     filter-includeUrl:
       - /api/v1/**

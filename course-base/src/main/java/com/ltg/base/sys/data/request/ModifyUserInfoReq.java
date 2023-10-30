@@ -32,4 +32,6 @@ public class ModifyUserInfoReq implements Serializable {
     private String identityCode;
     @Schema(title = "头像url")
     private String avatarUrl;
+    @Schema(title = "头像id")
+    private Long avatarId;
 }

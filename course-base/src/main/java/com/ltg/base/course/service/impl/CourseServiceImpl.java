@@ -21,6 +21,7 @@ import com.ltg.framework.util.http.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,5 +110,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         }
         return new PageInfo<>(courseVoPage);
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long courseId) {
+        List<CourseOrder> courseOrders = courseOrderMapper.selectList(new LambdaQueryWrapper<CourseOrder>().eq(CourseOrder::getCourseId, courseId));
+        courseOrderMapper.deleteBatchIds(courseOrders.stream().map(CourseOrder::getId).toList());
+        this.removeById(courseId);
     }
 }

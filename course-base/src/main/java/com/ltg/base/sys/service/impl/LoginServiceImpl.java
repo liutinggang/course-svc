@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -73,8 +74,7 @@ public class LoginServiceImpl implements LoginService {
                 throw new LoginException("密码错误");
             }
             UserInfo userInfo = sysUserService.getUserInfo(user.getId());
-            FileInfo fileInfo = fileInfoService.getById(userInfo.getAvatarId());
-            userInfo.setAvatarUrl(fileInfo.getUrl());
+
             //存入redis
             String userId = userInfo.getId().toString();
             String key = String.format("userId:%s", userId);
@@ -130,10 +130,12 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Result<String> modifyPassword(ModifyPasswordReq req) {
-        if (!req.getSmsCode().equals("132546")) {
+        if (!req.getSmsCode().equals("123456")) {
             throw new LoginException("验证码不正确");
         }
-        SysUser sysUser = sysUserMapper.selectByUsername(req.getMobile());
+        LambdaQueryWrapper<SysUser> wrapper =new LambdaQueryWrapper<>();
+        wrapper.eq(SysUser::getUsername,req.getMobile());
+        SysUser sysUser = sysUserMapper.selectOne(wrapper);
         String password = null;
         try {
             password = Md5Util.getEncryptedPwd(req.getPassword());
@@ -156,11 +158,11 @@ public class LoginServiceImpl implements LoginService {
         sysUser.setMobile(req.getMobile());
         sysUser.setDisplayName(req.getRealName());
         sysUser.setIdentityCode(req.getIdentityCode());
-        sysUser.setAvatarUrl(req.getAvatarUrl());
+        sysUser.setAvatarId(req.getAvatarId());
         sysUserMapper.updateById(sysUser);
-        sysUserService.getUserInfo(sysUser.getId());
-        //redis缓存更新
         UserInfo userInfo = sysUserService.getUserInfo(sysUser.getId());
+        FileInfo fileInfo = fileInfoService.getById(req.getAvatarId());
+        userInfo.setAvatarUrl(fileInfo.getUrl());
         String key = String.format("userId:%s", sysUser.getId().toString());
         String userInfoJson = null;
         try {
@@ -169,7 +171,7 @@ public class LoginServiceImpl implements LoginService {
             throw new RuntimeException(e);
         }
         redisTemplate.opsForValue().set(key, userInfoJson, 3, TimeUnit.HOURS);
-        return Result.success();
+        return Result.success(userInfo);
     }
 
 

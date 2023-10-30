@@ -62,5 +62,11 @@ public class AdminCourseController {
         return courseService.detail(courseId);
     }
 
+    @DeleteMapping("/api/v1/admin/course/delete/{courseId}")
+    @Operation(summary = "课程详情")
+    public Result delete(@PathVariable Long courseId){
+         courseService.delete(courseId);
+         return Result.success();
+    }
 
 }

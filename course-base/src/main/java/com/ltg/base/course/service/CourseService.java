@@ -31,5 +31,5 @@ public interface CourseService extends IService<Course> {
     PageInfo<CourseVo> consumerList(Page<CourseVo> objectPage, Integer status, String keyword);
 
 
-
+    void delete(Long courseId);
 }

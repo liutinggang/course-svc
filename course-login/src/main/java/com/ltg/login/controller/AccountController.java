@@ -1,10 +1,15 @@
 package com.ltg.login.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ltg.base.file.service.FileInfoService;
 import com.ltg.base.sys.data.param.LoginParam;
 import com.ltg.base.sys.data.request.ModifyPasswordReq;
 import com.ltg.base.sys.data.request.ModifyUserInfoReq;
 import com.ltg.base.sys.data.request.RegisterReq;
 import com.ltg.base.sys.data.response.CurrentUserHolder;
+import com.ltg.base.sys.service.SysUserService;
+import com.ltg.framework.constants.Constant;
 import com.ltg.framework.util.http.Result;
 import com.ltg.framework.annotation.CurrentUser;
 
@@ -15,6 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -37,6 +43,10 @@ public class AccountController {
      */
     private final LoginService loginService;
 
+    private final SysUserService sysUserService;
+
+    private final RedisTemplate<String,Object> redisTemplate;
+    private final FileInfoService fileInfoService;
     /**
      * 登录
      *

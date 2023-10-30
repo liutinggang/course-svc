@@ -17,4 +17,4 @@ app:
   storage:
     # 配置本地文件储存库位置
     local-prefix: C:\company\data\files\dg-appeal
-    domain: http://127.0.0.1:8990
+    domain: http://127.0.0.1:8990/course-login-api

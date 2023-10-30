@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ltg.base.file.entity.FileInfo;
+import com.ltg.base.file.service.FileInfoService;
 import com.ltg.base.sys.data.request.ModifyUserRoleReq;
 import com.ltg.base.sys.data.response.UserInfo;
 import com.ltg.base.sys.data.response.UserPageResp;
@@ -23,6 +25,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +47,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, String> redisTemplate;
+    private final FileInfoService fileInfoService;
 
 
 
@@ -58,13 +62,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return Result.success(this.getUserInfo(userId));
     }
 
-
     @Override
     public UserInfo getUserInfo(Long userId) {
         SysUser sysUser = sysUserMapper.selectById(userId);
-        sysUser.setAvatarId(sysUser.getAvatarId());
         SysRole sysRole = sysRoleMapper.selectById(sysUser.getRoleId());
+        sysUser.setAvatarId(sysUser.getAvatarId());
+        FileInfo fileInfo = fileInfoService.getById(sysUser.getAvatarId());
         UserInfo userInfo = new UserInfo();
+        if(Objects.nonNull(fileInfo)){
+            userInfo.setAvatarUrl(fileInfo.getUrl());
+        }
         BeanUtils.copyProperties(sysUser,userInfo);
         userInfo.setSysRole(sysRole);
         return userInfo;

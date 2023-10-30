@@ -138,39 +138,41 @@ jobs:
               docker-compose pull
               docker-compose down
               docker-compose up -d
-  # 集成测试(功能测试)
-#  testOne:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      image: ${{ steps.build-admin-server-image.outputs.image }}
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: TEST INSERT COURSE
-#        run: |
-#          chmod u+x ./shell/test-insert-course.sh
-#          ./shell/test-insert-course.sh
-#
-#      - name: TEST REGISTER USER
-#        run: |
-#          chmod u+x ./shell/test-register-and-login.sh
-#          ./shell/test-register-and-login.sh
-  # 性能测试
-#  testTwo:
-#    runs-on: ubuntu-latest
-#    outputs:
-#      image: ${{ steps.build-admin-server-image.outputs.image }}
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Install JMeter
-#        run: |
-#          wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz
-#          tar -xzf apache-jmeter-5.6.2.tgz
-#
-#      - name: Run performance test
-#        run: |
-#          ./apache-jmeter-5.6.2/bin/jmeter -n -t /home/runner/work/course-svc/course-svc/JMeter/testplan.jmx -l /home/runner/work/course-svc/course-svc/JMeter/results.jtl
-#          cat JMeter/results.jtl
+#   集成测试(功能测试)
+  testOne:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-admin-server-image.outputs.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: TEST INSERT COURSE
+        run: |
+          chmod u+x ./shell/test-insert-course.sh
+          ./shell/test-insert-course.sh
+
+      - name: TEST REGISTER USER
+        run: |
+          chmod u+x ./shell/test-register-and-login.sh
+          ./shell/test-register-and-login.sh
+#   性能测试
+  testTwo:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.build-admin-server-image.outputs.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install JMeter
+        run: |
+          wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz
+          tar -xzf apache-jmeter-5.6.2.tgz
+
+      - name: Run performance test
+        run: |
+          ./apache-jmeter-5.6.2/bin/jmeter -n -t /home/runner/work/course-svc/course-svc/JMeter/testplan.jmx -l /home/runner/work/course-svc/course-svc/JMeter/results.jtl
+          cat JMeter/results.jtl

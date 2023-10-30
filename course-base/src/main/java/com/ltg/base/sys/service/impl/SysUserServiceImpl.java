@@ -73,6 +73,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             userInfo.setAvatarUrl(fileInfo.getUrl());
         }
         BeanUtils.copyProperties(sysUser,userInfo);
+        userInfo.setAvatarUrl(fileInfo.getUrl());
         userInfo.setSysRole(sysRole);
         return userInfo;
     }

@@ -32,6 +32,7 @@ import java.net.InetAddress;
 public class AdminApplication {
     @SneakyThrows
     public static void main(String[] args) {
+
         SpringApplication.run(AdminApplication.class);
     }
 }

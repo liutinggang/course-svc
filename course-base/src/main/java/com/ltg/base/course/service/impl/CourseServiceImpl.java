@@ -116,7 +116,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long courseId) {
         List<CourseOrder> courseOrders = courseOrderMapper.selectList(new LambdaQueryWrapper<CourseOrder>().eq(CourseOrder::getCourseId, courseId));
-        courseOrderMapper.deleteBatchIds(courseOrders.stream().map(CourseOrder::getId).toList());
+        if(Objects.nonNull(courseOrders)&&!courseOrders.isEmpty()){
+            List<Long> list = courseOrders.stream().map(CourseOrder::getId).toList();
+            courseOrderMapper.deleteBatchIds(list);
+        }
         this.removeById(courseId);
     }
 }

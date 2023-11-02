@@ -3,7 +3,7 @@
 # 发布课程测试
 # 登录测试
 function test_login {
-    login_url="http://18.142.149.25/course-login-api/api/v1/account/login"
+    login_url="http://18.140.77.254/course-login-api/api/v1/account/login"
     login_data='{"username": "admin", "password": "123456"}'
     response=$(curl -s -X POST -H "Content-Type: application/json" -d "$login_data" "$login_url")
     echo $response
@@ -19,7 +19,7 @@ function test_login {
 # 发布课程测试
 function test_publish_course {
     token=$(cat token.txt)
-    publish_url="http://18.142.149.25/course-admin-api/api/v1/admin/course/publish"
+    publish_url="http://18.140.77.254/course-admin-api/api/v1/admin/course/publish"
     headers="Authorization: $token"
     course_data='{"courseName":"test-course-one","price":0,"priceType":0,"fileIds":["1717140344096219137"]}'
     response=$(curl -s -X PUT -H "Content-Type: application/json" -H "$headers" -d "$course_data" "$publish_url")

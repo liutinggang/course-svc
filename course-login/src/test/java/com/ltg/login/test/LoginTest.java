@@ -31,7 +31,7 @@ public class LoginTest {
         LoginParam loginParam = new LoginParam();
         loginParam.setUsername("admin");
         loginParam.setPassword("123456");
-        String loginUrl = "http://18.140.77.254/course-login-api/api/v1/account/login";
+        String loginUrl = "http://18.142.149.25/course-login-api/api/v1/account/login";
         ResponseEntity<String> response = restTemplate.postForEntity(loginUrl,loginParam, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         String body = response.getBody();

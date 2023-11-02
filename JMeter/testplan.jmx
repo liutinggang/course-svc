@@ -46,7 +46,7 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">18.140.77.254/course-amin-api</stringProp>
+          <stringProp name="HTTPSampler.domain">18.142.149.25/course-amin-api</stringProp>
           <stringProp name="HTTPSampler.port">80</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">utf-8</stringProp>
